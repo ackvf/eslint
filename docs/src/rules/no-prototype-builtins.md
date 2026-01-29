@@ -9,7 +9,7 @@ In ECMAScript 5.1, `Object.create` was added, which enables the creation of obje
 
 Additionally, objects can have properties that shadow the builtins on `Object.prototype`, potentially causing unintended behavior or denial-of-service security vulnerabilities. For example, it would be unsafe for a webserver to parse JSON input from a client and call `hasOwnProperty` directly on the resulting object, because a malicious client could send a JSON value like `{"hasOwnProperty": 1}` and cause the server to crash.
 
-To avoid subtle bugs like this, it's better to always call these methods from `Object.prototype`. For example, `foo.hasOwnProperty("bar")` should be replaced with `Object.prototype.hasOwnProperty.call(foo, "bar")`.
+To avoid subtle bugs like this, it's better to always call these methods from `Object.prototype`. For example, `foo.hasOwnProperty("bar")` should be replaced with `Object.prototype.hasOwnProperty.call(foo, "bar")` or `Object.hasOwn(foo, "bar")`.
 
 ## Rule Details
 
@@ -37,6 +37,8 @@ Examples of **correct** code for this rule:
 
 ```js
 /*eslint no-prototype-builtins: "error"*/
+
+const hasOwn = Object.hasOwn(foo, "bar");
 
 const hasBarProperty = Object.prototype.hasOwnProperty.call(foo, "bar");
 
